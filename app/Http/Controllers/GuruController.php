@@ -16,7 +16,7 @@ class GuruController extends Controller
     public function index()
     {
         $data = Guru::query()
-            ->simplePaginate('10');
+            ->simplePaginate('5');
         $title = 'Delete Data!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
@@ -36,6 +36,11 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
+
+        //cara menjalan seederphp artisan db:seed
+        //php artisan db:seed --class=UsersTableSeeder
+        // github https://github.com/MarioKozlet/Tugas-UKK
+
         $validateData = $request->validate([
             'guru' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png|max:5048',
@@ -82,7 +87,14 @@ class GuruController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $guru = Guru::findOrFail($id);
+
+        $user = User::query()
+            ->where('email', $guru['email'])
+            ->firstOrFail();
+
+        return view('guru.edit', compact('guru', 'user'));
     }
 
     /**
@@ -90,7 +102,49 @@ class GuruController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validateData = $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email:dns',
+            'password' => 'nullable|min:8',
+            'guru' => 'required',
+            'file' => 'nullable|mimes:jpg,jpeg,png|max:5048',
+        ]);
+
+        $guru = Guru::findOrFail($id);
+        $user = User::where('email', $validateData['email'])->firstOrFail();
+
+        // Jika ada file gambar baru diunggah, hapus gambar lama dan simpan yang baru
+        if ($request->hasFile('file')) {
+            // Hapus gambar lama
+            $oldImage = public_path('images') . '/' . $guru->nama_file;
+            if (File::exists($oldImage)) {
+                File::delete($oldImage);
+            }
+            // Simpan gambar baru
+            $imgName = time() . "." . $request->file->extension();
+            $request->file->move(public_path('images'), $imgName);
+            $guru->nama_file = $imgName;
+        }
+
+        // Update data guru
+        $guru->guru = $validateData['guru'];
+        $guru->email = $validateData['email'];
+        $guru->save();
+
+        // Update data user
+        if ($validateData['password']) {
+            $validateData['password'] = bcrypt($validateData['password']);
+            $user->save(['password' => $validateData['password']]);
+        }
+        $user->name = $validateData['name'];
+        $user->username = $validateData['username'];
+        $user->email = $validateData['email'];
+        $user->role = 'guru';
+        $user->save();
+
+        Alert::success('Success', 'Data Updated Successfully');
+        return to_route('guru.index');
     }
 
     /**

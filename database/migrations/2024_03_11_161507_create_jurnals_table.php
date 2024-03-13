@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('jurnals', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_guru');
-            $table->integer('id_kelas');
+            $table->foreignId('id_guru')->constrained();
+            $table->foreignId('id_kelas')->constrained();
             $table->string('materi');
             $table->timestamps();
         });

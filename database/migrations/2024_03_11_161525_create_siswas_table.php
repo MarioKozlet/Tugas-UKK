@@ -19,7 +19,7 @@ return new class extends Migration
                 'L',
                 'P'
             ]);
-            $table->integer('id_kelas');
+            $table->foreignId('id_kelas')->constrained();
             $table->timestamps();
         });
     }

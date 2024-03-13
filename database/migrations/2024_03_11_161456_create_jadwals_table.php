@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
             $table->integer('id_kelas');
-            $table->integer('id_guru');
+            $table->foreignId('id_guru')->constrained();
             $table->string('hari');
             $table->string('jam1');
             $table->string('jam2');

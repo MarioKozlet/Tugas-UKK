@@ -6,7 +6,7 @@
                 Master Data User
             </h3>
             <div class="divider text-end">
-                <a href="{{ route('guru.create') }}" class="btn btn-outline-primary"><i class='bx bx-plus'></i></a>
+                <a href="{{ route('siswa.create') }}" class="btn btn-outline-primary"><i class='bx bx-plus'></i></a>
             </div>
         </div>
         <div class="card-body">
@@ -15,18 +15,21 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Guru</th>
-                            <th>Foto</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @foreach ($data as $item)
+                        @foreach ($data as $user)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->guru }}</td>
-                                <td><img sizes="" src="{{ asset('images/' . $item->nama_file) }}" alt="">
-                                </td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -34,10 +37,10 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('guru.edit', $item->id) }}"><i
+                                            <a class="dropdown-item" href="{{ route('manajemenuser.edit', $user) }}"><i
                                                     class="bx bx-edit-alt me-1"></i>
                                                 Edit</a>
-                                            <a class="dropdown-item" href="{{ route('guru.destroy', $item->id) }}"
+                                            <a class="dropdown-item" href="{{ route('manajemenuser.destroy', $user) }}"
                                                 data-confirm-delete="true"><i class="bx bx-trash-alt me-1"></i>
                                                 Delete</a>
                                         </div>
@@ -48,7 +51,7 @@
                     </tbody>
                 </table>
             </div>
-            {{-- {{ $data->links() }} --}}
+            {{ $data->links() }}
         </div>
     </div>
 @endsection

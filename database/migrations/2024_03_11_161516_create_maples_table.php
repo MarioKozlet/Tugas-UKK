@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('maples', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_mapel');
+            $table->foreignId('id_mapel')->constrained();
             $table->string('mapel');
             $table->string('level');
             $table->timestamps();

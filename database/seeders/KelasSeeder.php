@@ -13,6 +13,8 @@ class KelasSeeder extends Seeder
      */
     public function run(): void
     {
+        //php artisan make:seeder nama Seeder
+        //php artisan make:middeleware nama Middeleware
         $kelas = [
             ['kelas' => 'XII-TKJ'],
             ['kelas' => 'XII-RPL-1'],

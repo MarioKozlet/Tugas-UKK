@@ -4,6 +4,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManajemenUserController;
+use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::resource('/manajemenuser', ManajemenUserController::class)->middleware('a
 Route::resource('/kelas', KelasController::class)->middleware('auth', 'admin');
 
 Route::resource('/guru', GuruController::class)->middleware('auth', 'admin');
+
+Route::resource('/siswa', SiswaController::class)->middleware('auth', 'admin');
 
 Route::controller(LoginController::class)->name('auth.')->group(function () {
     Route::get('/', 'index')->name('index');
